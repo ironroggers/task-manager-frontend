@@ -10,7 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -132,11 +133,7 @@ export default function LoginScreen({ navigation }) {
               disabled={loading}
             >
               {loading ? (
-                <MaterialCommunityIcons 
-                  name="loading" 
-                  size={24} 
-                  color="#FFF" 
-                />
+                <ActivityIndicator size="small" color="#FFFFFF" />
               ) : (
                 <Text style={styles.buttonText}>Sign In</Text>
               )}

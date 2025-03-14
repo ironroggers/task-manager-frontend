@@ -10,7 +10,8 @@ import {
   KeyboardAvoidingView, 
   Platform,
   ScrollView,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import API_URL from "../../src/config";
@@ -39,6 +40,7 @@ export default function SignupScreen({ navigation }) {
       });
 
       const authResponse = await response.json();
+      console.log("Logging the auth Response",authResponse);
       if(authResponse?.message === 'User registered successfully') {
         Alert.alert(
           'Success!', 
@@ -152,7 +154,7 @@ export default function SignupScreen({ navigation }) {
               disabled={loading}
             >
               {loading ? (
-                <MaterialCommunityIcons name="loading" size={24} color="#FFF" />
+                <ActivityIndicator size="small" color="#FFFFFF" />
               ) : (
                 <Text style={styles.buttonText}>Create Account</Text>
               )}
