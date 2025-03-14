@@ -1,6 +1,7 @@
 # Task Manager App
 
 A modern, feature-rich task management application built with React Native and Expo. This app helps users organize their daily tasks with an intuitive interface and powerful features.
+### Note : Authentication code is expired after 1 hour of ideal time.
 
 ## Features
 
