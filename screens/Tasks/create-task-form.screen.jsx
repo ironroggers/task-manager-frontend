@@ -28,7 +28,7 @@ export default function CreateTaskFormScreen({ route, navigation }) {
       setPriority(priority || "Medium");
       setStatus(status || "Pending");
       setDueDate(dueDate ? new Date(dueDate) : new Date());
-      setEstimatedTime(estimatedTime || "");
+      setEstimatedTime(estimatedTime ? estimatedTime.toString() : "");
       setTaskId(_id);
     }
   }, [route.params?.task]);

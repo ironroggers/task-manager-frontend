@@ -1,0 +1,46 @@
+{
+  "isSample": true,
+  "tasks": [
+    {
+      "isSample": true,
+      "title": "Set up React Native Project",
+      "description": "Initialize a new React Native project using Expo CLI and configure essential dependencies including navigation, state management, and UI components.",
+      "priority": "High",
+      "status": "Pending",
+      "estimatedTime": "4",
+      "dueDate": "2024-03-25T00:00:00.000Z"
+    },
+    {
+      "title": "Implement Authentication Flow",
+      "description": "Create login and registration screens with form validation. Integrate JWT authentication and secure route handling using React Navigation.",
+      "priority": "High",
+      "status": "In Progress",
+      "estimatedTime": "8",
+      "dueDate": "2024-03-26T00:00:00.000Z"
+    },
+    {
+      "title": "Design Custom Components",
+      "description": "Build reusable UI components including custom buttons, cards, and form inputs. Ensure consistent styling and proper prop handling.",
+      "priority": "Medium",
+      "status": "Pending",
+      "estimatedTime": "6",
+      "dueDate": "2024-03-27T00:00:00.000Z"
+    },
+    {
+      "title": "Implement API Integration",
+      "description": "Set up Axios for API calls, create API services, and implement proper error handling. Add loading states and error messages for better UX.",
+      "priority": "High",
+      "status": "Pending",
+      "estimatedTime": "5",
+      "dueDate": "2024-03-28T00:00:00.000Z"
+    },
+    {
+      "title": "Add Data Persistence",
+      "description": "Implement AsyncStorage for local data persistence. Create utility functions for storing and retrieving user preferences and cached data.",
+      "priority": "Medium",
+      "status": "Pending",
+      "estimatedTime": "4",
+      "dueDate": "2024-03-29T00:00:00.000Z"
+    }
+  ]
+} 

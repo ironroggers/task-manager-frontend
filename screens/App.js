@@ -49,10 +49,8 @@ export default function App() {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                  title: "Home",
-                  headerRight: () => (
-                    <Button title="Logout" onPress={logout} color="#FFF" />
-                  ),
+                  headerShown: false,
+                  tabBarStyle: { display: 'none' }
                 }}
               />
               <Stack.Screen

@@ -1,57 +1,183 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
-import axios from "axios";
-import API_URL from "../../src/config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
+import { View, ScrollView, StyleSheet, SafeAreaView } from "react-native";
+import { Text, Surface, IconButton, Divider } from "react-native-paper";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function TaskDetailsScreen({ route }) {
-  const { taskId } = route.params;
-  const [task, setTask] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function TaskDetailsScreen({ route, navigation }) {
+  const { task, isSampleMode } = route.params;
 
-  useEffect(() => {
-    const fetchTaskDetails = async () => {
-      try {
-        const token = await AsyncStorage.getItem("userToken");
-        const response = await axios.get(`${API_URL}/tasks/${taskId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setTask(response.data);
-      } catch (error) {
-        console.error("Error fetching task details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const getPriorityColor = (priority) => {
+    switch (priority?.toLowerCase()) {
+      case 'high':
+        return '#FF5252';
+      case 'medium':
+        return '#FFC107';
+      case 'low':
+        return '#4CAF50';
+      default:
+        return '#757575';
+    }
+  };
 
-    fetchTaskDetails();
-  }, [taskId]);
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#007AFF" style={styles.loader} />;
-  }
+  const getStatusIcon = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'completed':
+        return 'check-circle';
+      case 'in progress':
+        return 'progress-clock';
+      case 'pending':
+        return 'clock-outline';
+      default:
+        return 'help-circle-outline';
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{task.title}</Text>
-      <Text style={styles.description}>{task.description}</Text>
-      <Text style={styles.info}>Priority: {task.priority}</Text>
-      <Text style={styles.info}>Status: {task.status}</Text>
-      <Text style={styles.info}>
-        Due Date: {task.dueDate ? new Date(task.dueDate).toDateString() : "Not set"}
-      </Text>
-      <Text style={styles.info}>
-        Estimated Time: {task.estimatedTime ? `${task.estimatedTime} hours` : "Not specified"}
-      </Text>
-      <Text style={styles.info}>Created At: {new Date(task.createdAt).toLocaleString()}</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <Surface style={styles.card} elevation={2}>
+          <View style={styles.header}>
+            <Text variant="headlineMedium" style={styles.title}>
+              {task.title}
+            </Text>
+            {!isSampleMode && (
+              <IconButton
+                icon="pencil"
+                iconColor="#4CAF50"
+                size={24}
+                style={styles.editButton}
+                onPress={() => navigation.navigate("CreateTaskForm", { task })}
+              />
+            )}
+          </View>
+
+          <Text style={styles.description}>{task.description}</Text>
+
+          <Divider style={styles.divider} />
+
+          <View style={styles.detailsContainer}>
+            <View style={styles.detailRow}>
+              <MaterialCommunityIcons 
+                name="flag" 
+                size={24} 
+                color={getPriorityColor(task.priority)} 
+              />
+              <View style={styles.detailText}>
+                <Text style={styles.detailLabel}>Priority</Text>
+                <Text style={[styles.detailValue, { color: getPriorityColor(task.priority) }]}>
+                  {task.priority || 'Not set'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.detailRow}>
+              <MaterialCommunityIcons 
+                name={getStatusIcon(task.status)} 
+                size={24} 
+                color="#6200EE" 
+              />
+              <View style={styles.detailText}>
+                <Text style={styles.detailLabel}>Status</Text>
+                <Text style={styles.detailValue}>{task.status || 'Not set'}</Text>
+              </View>
+            </View>
+
+            <View style={styles.detailRow}>
+              <MaterialCommunityIcons name="calendar" size={24} color="#FF9800" />
+              <View style={styles.detailText}>
+                <Text style={styles.detailLabel}>Due Date</Text>
+                <Text style={styles.detailValue}>
+                  {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'Not set'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.detailRow}>
+              <MaterialCommunityIcons name="clock-outline" size={24} color="#2196F3" />
+              <View style={styles.detailText}>
+                <Text style={styles.detailLabel}>Estimated Time</Text>
+                <Text style={styles.detailValue}>
+                  {task.estimatedTime ? `${task.estimatedTime} hours` : 'Not specified'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.detailRow}>
+              <MaterialCommunityIcons name="calendar-clock" size={24} color="#757575" />
+              <View style={styles.detailText}>
+                <Text style={styles.detailLabel}>Created</Text>
+                <Text style={styles.detailValue}>
+                  {new Date(task.createdAt).toLocaleString()}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </Surface>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#F5F5F5" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 10 },
-  description: { fontSize: 18, color: "#555", marginBottom: 10 },
-  info: { fontSize: 16, color: "#333", marginBottom: 5 },
-  loader: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+  },
+  scrollView: {
+    flex: 1,
+  },
+  card: {
+    margin: 16,
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  title: {
+    flex: 1,
+    fontSize: 24,
+    fontWeight: "700",
+    color: '#1A1A1A',
+    marginRight: 16,
+  },
+  editButton: {
+    margin: 0,
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+  },
+  description: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: '#424242',
+    marginBottom: 24,
+  },
+  divider: {
+    marginVertical: 16,
+    backgroundColor: '#E0E0E0',
+  },
+  detailsContainer: {
+    gap: 20,
+  },
+  detailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  detailText: {
+    marginLeft: 16,
+    flex: 1,
+  },
+  detailLabel: {
+    fontSize: 14,
+    color: '#757575',
+    marginBottom: 2,
+  },
+  detailValue: {
+    fontSize: 16,
+    color: '#1A1A1A',
+    fontWeight: '500',
+  },
 });
