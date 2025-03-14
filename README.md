@@ -58,7 +58,7 @@ A modern, feature-rich task management application built with React Native and E
 
 ### Installation
 
-1. Clone the repository - git clone https://github.com/yourusername/task-manager-app.git
+1. Clone the repository - git clone https://github.com/ironroggers/task-manager-backend
 2. Create a `.env` file in the root directory and add your configuration - API_URL=your_api_url
 3. Start the development server - expo start
 
